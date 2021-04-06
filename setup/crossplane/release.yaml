@@ -13,8 +13,7 @@ spec:
         kind: HelmRepository
         name: crossplane
         namespace: flux-system
-      version: v1.2.0-rc.0.113.gb94884d0
-  interval: 1h0m0s
+  interval: 1m
   install:
     remediation:
       retries: 3
