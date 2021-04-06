@@ -5,10 +5,10 @@ metadata:
   namespace: flux-system
 spec:
   releaseName: crossplane
+  targetNamespace: crossplane-system
   chart:
     spec:
       chart: crossplane-master
-      targetNamespace: crossplane-system
       sourceRef:
         kind: HelmRepository
         name: crossplane
