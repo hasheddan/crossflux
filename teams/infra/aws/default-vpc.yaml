@@ -27,3 +27,4 @@ spec:
     region: us-east-1
     groupName: default
     description: default VPC security group - updated
+  deletionPolicy: Orphan
