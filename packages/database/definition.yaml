@@ -1,0 +1,40 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: compositeinstances.database.crossflux.io
+spec:
+  claimNames:
+    kind: Instance
+    plural: instances
+  connectionSecretKeys:
+    - username
+    - password
+    - endpoint
+    - port
+  group: database.crossflux.io
+  names:
+    kind: CompositeInstance
+    plural: compositeinstances
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  storageGB:
+                    type: integer
+                  dbName:
+                    type: string
+                required:
+                  - storageGB
+                  - dbName
+            required:
+              - parameters
