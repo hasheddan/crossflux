@@ -1,9 +1,9 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Configuration
 metadata:
-  name: aws-platform
+  name: database
 spec:
-  package: hasheddan/crossflux-aws-platform:latest
+  package: hasheddan/crossflux-database:latest
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
