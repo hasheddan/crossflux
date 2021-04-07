@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-1
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: app-1
+  template:
+    metadata: 
+      labels:
+        app: app-1
+    spec:
+      containers:
+      - name: app-1
+        image: hasheddan/crossflux-team-1-app-1:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: 8080
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: app-1-db
+                key: endpoint
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: app-1-db
+                key: username
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-1-db
+                key: password
