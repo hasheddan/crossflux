@@ -3,7 +3,7 @@ kind: Configuration
 metadata:
   name: database
 spec:
-  package: hasheddan/crossflux-database:v0.1.0
+  package: hasheddan/crossflux-database:v0.2.0
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
