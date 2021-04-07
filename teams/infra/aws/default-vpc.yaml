@@ -1,0 +1,29 @@
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: VPC
+metadata:
+  name: default
+  labels:
+    networks.aws.crossflux.io/network-id: default
+  annotations:
+    crossplane.io/external-name: vpc-019ade7b
+spec:
+  forProvider:
+    region: us-east-1
+    cidrBlock: 172.31.0.0/16
+    enableDnsSupport: true
+    enableDnsHostNames: true
+  deletionPolicy: Orphan
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: SecurityGroup
+metadata:
+  name: default
+  labels:
+    networks.aws.crossflux.io/network-id: default
+  annotations:
+    crossplane.io/external-name: sg-e7aad9b9
+spec:
+  forProvider:
+    region: us-east-1
+    groupName: default
+    description: default VPC security group - updated
