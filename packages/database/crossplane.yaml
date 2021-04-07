@@ -8,5 +8,7 @@ spec:
   dependsOn:
     - provider: crossplane/provider-aws
       version: ">=v0.16.0"
+    - provider: crossplane/provider-gcp
+      version: ">=v0.16.0"
     - provider: crossplane/provider-sql
       version: "=v0.2.0-rc.1.7.gd4b363c"
