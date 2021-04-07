@@ -9,4 +9,4 @@ spec:
   secretRef:
     name: git-deploy-key
   ref:
-    branch: main
+    branch: demo-1
