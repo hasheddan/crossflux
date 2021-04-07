@@ -1,17 +1,33 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: platform
+  name: platform-configurations
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  dependsOn:
+    - name: setup
+  sourceRef:
+    kind: GitRepository
+    name: crossflux
+  path: ./platform/configurations
+  prune: true
+  validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: platform-provider-configs
   namespace: flux-system
 spec:
   # NOTE(hasheddan): we use a relatively short sync period here to make sure
   # that we are able to create any ProviderConfigs after packages are installed.
   interval: 1m0s
   dependsOn:
-    - name: setup
+    - name: platform-configurations
   sourceRef:
     kind: GitRepository
     name: crossflux
-  path: ./platform
+  path: ./platform/provider-configs
   prune: true
   validation: client
