@@ -7,7 +7,7 @@ spec:
   interval: 1m0s
   dependsOn:
     - name: setup
-    - name: platform
+    - name: platform-provider-configs
   sourceRef:
     kind: GitRepository
     name: crossflux
