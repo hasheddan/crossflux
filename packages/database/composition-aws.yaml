@@ -88,6 +88,7 @@ spec:
             crossplane.io/external-name: my-db
         spec:
           providerConfigRef:
+            name: default
       patches:
       # TODO: patch external name
         - fromFieldPath: metadata.uid
