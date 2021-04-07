@@ -4,7 +4,9 @@ metadata:
   name: platform
   namespace: flux-system
 spec:
-  interval: 10m0s
+  # NOTE(hasheddan): we use a relatively short sync period here to make sure
+  # that we are able to create any ProviderConfigs after packages are installed.
+  interval: 1m0s
   dependsOn:
     - name: setup
   sourceRef:
