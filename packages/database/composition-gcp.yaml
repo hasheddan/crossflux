@@ -1,0 +1,84 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: compositeinstances.gcp.database.crossflux.io
+  labels:
+    provider: gcp
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: database.crossflux.io/v1alpha1
+    kind: CompositeInstance
+  resources:
+    - base:
+        apiVersion: database.gcp.crossplane.io/v1beta1
+        kind: CloudSQLInstance
+        spec:
+          forProvider:
+            databaseVersion: MYSQL_5_7
+            region: us-central1
+            settings:
+              tier: db-n1-standard-1
+              dataDiskType: PD_SSD
+              ipConfiguration:
+                ipv4Enabled: true
+                authorizedNetworks:
+                  - value: "0.0.0.0/0"
+          writeConnectionSecretToRef:
+            namespace: crossplane-system
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-mysql"
+        - fromFieldPath: "spec.parameters.storageGB"
+          toFieldPath: "spec.forProvider.settings.dataDiskSizeGb"
+      connectionDetails:
+        - fromConnectionSecretKey: username
+        - fromConnectionSecretKey: password
+        - fromConnectionSecretKey: endpoint
+        - name: port
+          value: "3306"
+    - base:
+        apiVersion: mysql.sql.crossplane.io/v1alpha1
+        kind: ProviderConfig
+        metadata:
+          name: default
+        spec:
+          credentials:
+            source: MySQLConnectionSecret
+            connectionSecretRef:
+              namespace: default
+              name: db-conn
+      patches:
+        - fromFieldPath: metadata.uid
+          toFieldPath: metadata.name
+        - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+          toFieldPath: spec.credentials.connectionSecretRef.namespace
+        # This ProviderConfig uses the above RDSInstance's connection secret as
+        # its credentials secret.
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: spec.credentials.connectionSecretRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-mysql"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: mysql.sql.crossplane.io/v1alpha1
+        kind: Database
+        metadata:
+          annotations:
+            crossplane.io/external-name: my-db
+        spec:
+          providerConfigRef:
+            name: default
+      patches:
+      # TODO: patch external name
+        - fromFieldPath: metadata.uid
+          toFieldPath: spec.providerConfigRef.name
+        - fromFieldPath: spec.parameters.dbName
+          toFieldPath: metadata.annotations[crossplane.io/external-name]
