@@ -1,0 +1,10 @@
+apiVersion: database.crossflux.io/v1alpha1
+kind: Instance
+metadata:
+  name: app-1-db
+spec:
+  parameters:
+    storageGB: 20
+    dbName: app-1
+  writeConnectionSecretToRef:
+    name: app-1-db
