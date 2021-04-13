@@ -27,4 +27,7 @@ spec:
     region: us-east-1
     groupName: default
     description: default VPC security group - updated
+    vpcIdSelector:
+      matchLabels:
+        networks.aws.crossflux.io/network-id: default
   deletionPolicy: Orphan
